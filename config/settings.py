@@ -15,6 +15,7 @@ ALLOWED_HOSTS = []
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -25,7 +26,7 @@ INSTALLED_APPS = [
     "django_filters",
     "tasks",
 ]
-
+    
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
