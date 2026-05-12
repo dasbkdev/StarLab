@@ -1,0 +1,20 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h1>
+    {% if task %}
+        Редактировать задачу
+    {% else %}
+        Создать задачу
+    {% endif %}
+</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Сохранить</button>
+    <a href="{% url 'task_list' %}" class="btn btn-secondary">Назад</a>
+</form>
+{% endblock %}

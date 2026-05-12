@@ -1,0 +1,58 @@
+{% extends "tasks/base.html" %}
+
+{% block content %}
+<h1>Мои задачи</h1>
+
+<a href="{% url 'task_create' %}" class="btn">Создать задачу</a>
+
+<form method="get" style="margin-top: 20px;">
+    <label>Фильтр по статусу:</label>
+
+    <select name="status">
+        <option value="">Все</option>
+        <option value="todo" {% if request.GET.status == "todo" %}selected{% endif %}>Todo</option>
+        <option value="in_progress" {% if request.GET.status == "in_progress" %}selected{% endif %}>In Progress</option>
+        <option value="done" {% if request.GET.status == "done" %}selected{% endif %}>Done</option>
+    </select>
+
+    <button type="submit">Фильтровать</button>
+</form>
+
+<hr>
+
+{% for task in page_obj %}
+    <div class="task">
+        <h3>{{ task.title }}</h3>
+
+        <p>{{ task.description|default:"Без описания" }}</p>
+
+        <p>
+            Статус:
+            <span class="status">{{ task.status }}</span>
+        </p>
+
+        <div class="actions">
+            <a href="{% url 'task_update' task.id %}" class="btn">Редактировать</a>
+            <a href="{% url 'task_delete' task.id %}" class="btn btn-danger">Удалить</a>
+        </div>
+    </div>
+{% empty %}
+    <p>Задач пока нет.</p>
+{% endfor %}
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page=1{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Назад</a>
+    {% endif %}
+
+    <span>
+        Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Вперед</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">Последняя</a>
+    {% endif %}
+</div>
+{% endblock %}
